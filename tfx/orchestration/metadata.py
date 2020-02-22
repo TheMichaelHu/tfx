@@ -577,13 +577,11 @@ class Metadata(object):
     registered_input_artifact_ids = set(
         e.artifact_id
         for e in events
-        if e.type == metadata_store_pb2.Event.INPUT
-    )
+        if e.type == metadata_store_pb2.Event.INPUT)
     registered_output_artifact_ids = set(
         e.artifact_id
         for e in events
-        if e.type == metadata_store_pb2.Event.OUTPUT
-    )
+        if e.type == metadata_store_pb2.Event.OUTPUT)
     artifacts_and_events = []
     if input_artifacts:
       artifacts_and_events.extend(
@@ -722,6 +720,8 @@ class Metadata(object):
     current_execution.properties['run_id'].string_value = ''
     target_execution.properties['run_id'].string_value = ''
     current_execution.id = target_execution.id
+    current_execution.create_time_since_epoch = target_execution.create_time_since_epoch
+    current_execution.last_update_time_since_epoch = target_execution.last_update_time_since_epoch
     return current_execution == target_execution
 
   def get_cached_outputs(
