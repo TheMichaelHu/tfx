@@ -163,6 +163,18 @@ class ComponentTest(tf.test.TestCase):
                                  "should be an instance of ExecutorSpec"):
       MyComponent(spec=EmptyComponentSpec(), custom_executor_spec=object)
 
+  def testSimpleComponent(self):
+
+    class _MySimpleComponent(base_component._SimpleComponent):
+      SPEC_CLASS = _BasicComponentSpec
+      EXECUTOR_SPEC = executor_spec.ExecutorClassSpec(
+          base_executor.BaseExecutor)
+
+    input_channel = types.Channel(type=_InputArtifact)
+    instance = _MySimpleComponent(input=input_channel, folds=10)
+    self.assertIs(instance.inputs["input"], input_channel)
+    self.assertEqual(instance.outputs["output"].type, _OutputArtifact)
+
   def testComponentDriverClass(self):
 
     class InvalidDriverComponent(base_component.BaseComponent):
